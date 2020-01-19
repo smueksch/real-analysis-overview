@@ -1,0 +1,2057 @@
+%\documentclass[8pt]{extarticle} % Use for smaller font size.
+\documentclass[10pt]{article} % 10pt is smallest font size for 'article'.
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[portrait]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{mathtools}
+\usepackage{wasysym}
+\usepackage{tensor}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{etoolbox} % Required for \appto.
+\usepackage{centernot}
+\usepackage{upgreek} % For nicer looking epsilon (\upvarepsilon)
+
+\usepackage{xargs}
+
+\usepackage{ifthen}
+
+% Define emphasis to be bold face and italic.
+\DeclareTextFontCommand{\emph}{\bfseries\em}
+
+% Removes most of whitespace above and below equations.
+\newcommand{\zerodisplayskips}{%
+  \setlength{\abovedisplayskip}{-5pt}% Default: 12pt plus 3pt minus 9pt
+  \setlength{\belowdisplayskip}{3pt}% Default: 0pt plus 3pt
+  \setlength{\abovedisplayshortskip}{-5pt}% Default: 12pt plus 3pt minus 9pt
+  \setlength{\belowdisplayshortskip}{3pt}% Default: 7pt plus 3pt minus 4pt
+}
+\appto{\normalsize}{\zerodisplayskips}
+\appto{\small}{\zerodisplayskips}
+\appto{\footnotesize}{\zerodisplayskips}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Environment Setup %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+% New environments for definitions and theorems. These will let us put in the
+% exact reference to the definition/theorems in the notes, e.g.
+%
+% \begin{definition}{5.1.1}{}
+%     ...
+% \end{definition}
+%
+% to create a definition with title "Definition 5.1.1", referencing the
+% definition with the same number in the notes.
+\newenvironmentx{definition}[2][\empty] {
+
+    \newcommand{\Title}{Definition}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{theorem}[2][\empty] {
+
+    \newcommand{\Title}{Theorem}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{lemma}[2][\empty] {
+
+    \newcommand{\Title}{Lemma}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+
+\newenvironmentx{proposition}[2][\empty] {
+
+    \newcommand{\Title}{Proposition}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{corollary}[2][\empty] {
+
+    \newcommand{\Title}{Corollary}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{remark}[2][\empty] {
+
+    \newcommand{\Title}{Remark}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{example}[2][\empty] {
+
+    \newcommand{\Title}{Example}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{exercise}[2][\empty] {
+
+    \newcommand{\Title}{Exercise}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{workshop}[2][\empty] {
+
+    \newcommand{\Title}{Workshop}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+
+% Shorthand for Citing Wade Textbook:
+\newcommand{\cw}[1]{[Wade #1]}
+
+% Shorthand for Citing Workshop Material:
+% First argument is workshop number, second is question number.
+\newcommand{\cws}[2]{#1, Question #2}
+
+% Proof Hint:
+\newcommand{\Hint}{\vspace{0.2em}\textit{Hint: }}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commands for Mathematical Typesetting %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Redefine \leq and \geq to something nicer looking:
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+% Inner Product:
+\DeclareRobustCommand{\InnerProduct}[2]{
+    \ifmmode
+        \left( #1,#2 \right)
+    \else
+        \GenericError{\space\space\space\space}
+        {Attempting to use \InnerProduct outside of math mode}
+    \fi
+}
+
+% Vector Norm: 
+\DeclareRobustCommand{\Norm}[1]{
+    \ifmmode
+        \left\lVert #1 \right\rVert
+    \else
+        \GenericError{\space\space\space\space}
+        {Attempting to use \Norm outside of math mode}
+    \fi
+}
+
+% Image of Function:
+\DeclareMathOperator{\im}{im}
+
+% Sign:
+\DeclareMathOperator{\sgn}{sgn}
+
+% Norm of a Vector:
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+% Set of Matrices:
+\DeclareMathOperator{\Mat}{Mat}
+
+% Identity Mapping:
+\DeclareMathOperator{\id}{id}
+
+% Middle Value of a Set:
+\DeclareMathOperator{\Middle}{mid}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometdry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+%\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicols parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+\setlength{\columnseprule}{0.4pt} % For vertical lines separating columns.
+
+\begin{center}
+     \Large{Real Analysis} \\
+     \footnotesize{Sebastian Müksch, v2, 2018/19}
+\end{center}
+
+%%%%%%%%%%%%%%%
+% Convergence %
+%%%%%%%%%%%%%%%
+
+\section{Convergence}
+
+% Alternative Version of Pointwise Convergence of Sequence of Functions.
+\begin{remark}{\cw{7.2}}{}
+
+    Let $S \subseteq \mathbb{R}$, non-empty. A sequence of functions $f_n$ \emph{converges pointwise} if $\forall \upvarepsilon > 0, x \in S \, \exists N \in \mathbb{N}$ s.t.:
+
+        \begin{align*}
+            n \geq N \Rightarrow |f_n(x) - f(x)| < \upvarepsilon.
+        \end{align*}
+
+\end{remark}
+
+% Continuous Functions Converging Pointwise to Discontinuous Function.
+%\begin{remark}{\cw{7.3}}{}
+%
+%    Pointwise limit of continuous/differentiable functions is not necessarily continuous/differentiable.
+%
+%\end{remark}
+
+% Continuous Functions Converge Uniformly to Continuous Function.
+\begin{theorem}{\cw{7.9}}{}
+
+    Let $S \subseteq \mathbb{R}$, non-empty, and suppose $f_n \to f$ \emph{uniformly} on $S$ as $n \to \infty$. Then \emph{each} $f_n$ continuous at $x_0 \in S$ $\Rightarrow$ $f$ continuous at $x_0 \in S$.
+
+\end{theorem}
+
+% Uniform Convergence Allows Interchanging Limit and Integration.
+\begin{theorem}{\cw{7.10}}{}
+
+    Suppose $f_n \to f$ \emph{uniformly} on closed interval $[a,b]$. Then \emph{each} $f_n$ integrable on $[a,b]$ $\Rightarrow$ $f$ integrable on $[a,b]$ and
+
+        \begin{align*}
+            \lim_{n \to \infty} \int\limits_a^b f_n(x) \, dx = \int\limits_a^b \left( \lim_{n \to \infty} f_n(x) \right) \, dx
+        \end{align*}
+
+\end{theorem}
+
+% If Functions Become Arbitrarily Close They Converge Uniformly.
+\begin{lemma}{\cw{7.11}}{Uniform Cauchy Criterion}
+
+    Let $S \subseteq \mathbb{R}$, non-empty, and $f_n: S \to \mathbb{R}$ a sequence of functions. Then $f_n$ \emph{converges uniformly} on $S$ $\Leftrightarrow$ $\forall \upvarepsilon > 0 \, \exists N \in \mathbb{N}$ s.t.:
+
+        \begin{align*}
+            n,m \geq N \Rightarrow |f_n(x) - f_m(x)| < \upvarepsilon, \quad \forall x \in S.
+        \end{align*}
+
+\end{lemma}
+
+% Uniform Convergence on Derivatives Allows Interchanging Limit and Differentiation.
+\begin{theorem}{\cw{7.12}}{}
+
+    Let $(a,b)$ be a bounded interval and $f_n$ converging at some $x_0 \in (a,b)$. Each $f_n$ is differentiable on $(a,b)$ and $f_n'$ converges \emph{uniformly} on $(a,b)$ $\Rightarrow$ $f_n$ converges uniformly on $(a,b)$ and
+
+        \begin{align*}
+            \lim_{n \to \infty} f_n'(x) = \left( \lim_{n \to \infty} f_n(x) \right)'.
+        \end{align*}
+
+\end{theorem}
+
+% Bounded Functions Converge Uniformly to Bounded and are Then Uniformly Bounded.
+\begin{exercise}{7.1.3}{}
+
+    Let the sequence of $f_n: S \to \mathbb{R}$ be bounded and let $f_n \to f$ uniformly. Then $f$ is bounded and moreover, sequence $f_n$ is \emph{uniformly} bounded.
+
+\end{exercise}
+
+%
+\begin{exercise}{7.1.5}{}
+
+    Let $f_n \to f$ and $g_n \to g$ uniformly as $n \to \infty$ on $S \subseteq \mathbb{R}$. Then
+
+        \begin{enumerate}[a)]
+            \setlength{\parskip}{0em}
+            \item $f_n + g_n \to f + g$, $\alpha f_n \to \alpha f$ \emph{uniformly} on $S$ as $n \to \infty$, for all $\alpha \in \mathbb{R}$;
+            \item $f_ng_n \to fg$ \emph{pointwise} on $S$;
+            \item if $f$, $g$ \emph{bounded}, then $f_ng_n \to fg$ \emph{uniformly} on $S$;
+            \item if $g$ unbounded, c) is false.
+        \end{enumerate}
+
+\end{exercise}
+
+% Ratios of Continuous Functions on Closed & Bounded Intervals Converge Uniformly.
+\begin{exercise}{7.1.9}{}
+
+    Let $f,g$ be \emph{continuous} on \emph{closed \& bounded interval} $[a,b]$ with $|g(x)| > 0$ for all $x \in [a,b]$. Let $f_n \to f$ and $g_n \to g$ \emph{uniformly} on $[a,b]$. Then
+
+        \begin{enumerate}[a)]
+            \setlength{\parskip}{0em}
+            \item $1/g_n$ is defined for large $n$ and $f_n/g_n \to f/g$ \emph{uniformly} on $[a,b]$;
+            \item a) is false if $[a,b]$ is replaced with $(a,b)$.
+        \end{enumerate}
+
+\end{exercise}
+
+%
+\begin{exercise}{7.1.10}{}
+
+    Let $S \subseteq \mathbb{R}$, non-empty, $f_n$ sequence of \emph{bounded} functions on $S$ s.t. $f_n \to f$ \emph{uniformly}. Then
+
+        \begin{align*}
+            \frac{f_1(x) + \hdots + f_n(x)}{n} \to f(x)
+        \end{align*}
+
+    \emph{uniformly} on $S$.
+
+\end{exercise}
+
+% Uniform Convergence allows Interchanging Summation and Integration/Differentiation.
+\begin{theorem}{\cw{7.14}}{}
+
+    Let $S \subseteq \mathbb{R}$, non-empty, $f_n: S \to \mathbb{R}$.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item Let each $f_n$ is continuous at $x_0 \in E$ $\Rightarrow$. Then $f = \sum_{n=1}^{\infty} f_n$ converging \emph{uniformly} $\Rightarrow$ $f$ \emph{continuous} at $x_0$.
+            \item Suppose $S = [a,b]$ and each $f_n$ be integrable on $[a,b]$. Then $f = \sum_{n=1}^{\infty} f_n$ converging \emph{uniformly} on $[a,b]$ $\Rightarrow$ $f$ \emph{integrable} on $[a,b]$ and
+
+                \begin{align*}
+                    \int\limits_a^b \left(\sum_{n=1}^{\infty} f_n(x) \right) \,dx = \sum_{n=1}^{\infty} \int\limits_a^b f_n(x) \,dx.
+                \end{align*}
+            \item Suppose $S$ is \emph{bounded, open interval} and each $f_n$ differentiable on $S$. $\sum_{n=1}^{\infty} f_n$ convergent at some $x_0 \in S$ and $\sum_{n=1}^{\infty} f_n'$ \emph{uniformly} convergent on $S$ $\Rightarrow$ $f \coloneqq \sum_{n=1}^{\infty} f_n$ \emph{uniformly} convergent on $S$, $f$ \emph{differentiable} on $S$ and
+
+                \begin{align*}
+                    \left( \sum_{n=1}^{\infty} f_n(x) \right)' = \sum_{n=1}^{\infty} f_n'(x)
+                \end{align*}
+
+            for $x \in S$.
+        \end{enumerate}
+
+\end{theorem}
+
+% Bounded By Convergent Series Gives Absolute and Uniform Convergence of Function Series.
+\begin{theorem}{\cw{7.15}}{Weierstrass M-Test}
+
+    Let $S \subseteq \mathbb{R}$, non-empty, and $f_n: S \to \mathbb{R}$. Suppose $M_n \geq 0$ satisfies $\sum_{n = 1}^{\infty} M_n < \infty$. If $\forall n \in \mathbb{N}, x \in S:\ |f_n(x)| \leq M_n$, then $\sum_{n = 1}^{\infty} f_n$ \emph{converges absolutely and uniformly} on $S$
+
+\end{theorem}
+
+% Uniform Convergence Preserves Limiting Processes.
+\begin{workshop}{\cws{2}{7}}{}
+
+    Let $f_n: \mathbb{R} \to \mathbb{R}$ be a sequence of \emph{continuous} functions converging \emph{uniformly} to $f$. Let $(x_n)$ be a sequence in $\mathbb{R}$ s.t. $x_n \to x \in \mathbb{R}$. Then $f_n(x_n) \to f(x)$.
+
+\end{workshop}
+
+%%%%%%%%%%%%%%%%
+% Power Series %
+%%%%%%%%%%%%%%%%
+
+\section{Power Series}
+
+% Radius of Convergence Determines Absolute Convergence and Divergence.
+\begin{theorem}{[Power Series, Thrm. 1]}{}
+
+    Let $R$ be radius of convergence of $\sum_{n=0}^{\infty} a_n (x - c)^n$.
+
+        \begin{enumerate}[(i)]
+            \setlength{\parskip}{0em}
+            \item $|x - c| < R$ $\Rightarrow$ series \emph{converges absolutely};
+            \item $|x - c| > R$ $\Rightarrow$ series \emph{diverges}.
+        \end{enumerate}
+
+\end{theorem}
+
+% Calculating Radius of Convergence Through Limit of Coefficients.
+\begin{exercise}{}{Radius of Convergence}
+
+    \begin{enumerate}[(i)]
+        \setlength{\parskip}{0em}
+        \item If $\lim_{n \to \infty} \left|\frac{a_n}{a_{n+1}}\right|$ exists, then it is radius of convergence;
+        \item If $\lim_{n \to \infty} |a_n|^{-\frac{1}{n}}$ exists, then it is radius of convergence.
+    \end{enumerate}
+
+\end{exercise}
+
+% Power Series Converge Uniformly & Absolutely to Continuous Function.
+\begin{theorem}{[Power Series, Thrm. 2]}{}
+
+    Let $R > 0$, then $\sum_{n=0}^{\infty} a_n (x - c)^n$ converges \emph{uniformly \& absolutely} on $|x - c| < R$ to a continuous function $f$, i.e.:
+
+        \begin{align*}
+            f(x) = \sum_{n=0}^{\infty} a_n (x - c)^n
+        \end{align*}
+
+    defines a continuous function $f: (c - R, c + R) \to \mathbb{R}$.
+
+\end{theorem}
+
+% Derivatives of Power Series Have Same Radius of Convergence.
+\begin{lemma}{[Power Series]}{}
+
+    $\sum_{n=0}^{\infty} a_n (x - c)^n$ and $\sum_{n=0}^{\infty} n a_n (x - c)^{n-1}$ have the same radius of convergence.
+
+\end{lemma}
+
+% Properties, Derivative and Coefficients of Taylor Series.
+\begin{theorem}{[Power Series, Thrm. 3]}{}
+
+    Suppose $\sum_{n=0}^{\infty} a_n (x - c)^n$ has radius of convergence $R$. Then
+
+        \begin{align*}
+            f(x) = \sum_{n=0}^{\infty} a_n (x - c)^n
+        \end{align*}
+
+    is \emph{infinitely differentiable} on $|x - c| < R$ and for such $x$:
+
+        \begin{align*}
+            f'(x) = \sum_{n=0}^{\infty} na_n (x - c)^{n-1}
+        \end{align*}
+
+    and the series converges \emph{uniformly \& absolutely} on $[c - r, c + r]$ for any $r < R$. Additionally
+
+        \begin{align*}
+            a_n = \frac{f^{(n)}(c)}{n!}.
+        \end{align*}
+
+\end{theorem}
+
+% Analytic Functions are Infinitely Differentiable, Coefficients are Define By Derivatives.
+\begin{remark}{[Power Series]}{}
+
+    Analytic functions are \emph{infinitely differentiable} on $\{x \in \mathbb{R}: |x - c| < r\}$ and the coefficients of the power series are \emph{uniquely} determined by $a_n = f^{(n)}(c)/n!$.
+
+\end{remark}
+
+% Uniform Convergence of Geometric Series.
+\begin{exercise}{7.2.2}{}
+
+    The geometric series
+
+        \begin{align*}
+            \sum_{n=0}^{\infty} x^n = \frac{1}{1 - x}
+        \end{align*}
+
+    converges \emph{uniformly} on any $[a,b] \subset (-1,1)$.
+
+\end{exercise}
+
+% Radius of Convergence of Related Power Series.
+\begin{exercise}{7.3.3}{}
+
+    Let $\sum_{k=0}{\infty} a_k x^k$ have radius of convergence $R$. Then
+
+        \begin{enumerate}[a)]
+            \item $\sum_{k=0}{\infty} a_k x^{2k}$ has radius of convergence $\sqrt{R}$
+            \item $\sum_{k=0}{\infty} a_k^2 x^k$ has radius of convergence $R^2$
+        \end{enumerate}
+
+\end{exercise}
+
+% Series with Smaller or Equal Terms Converges on Same Open Interval.
+\begin{exercise}{7.3.4}{}
+
+    Let $|a_k| \leq |b_k|$ for \emph{large} $k$ and $\sum_{k=0}{\infty} b_k x^k$ converges on \emph{open} interval $I$. Then $\sum_{k=0}{\infty} a_k x^k$ converges on $I$.
+
+    \Hint Supremum Definition.
+
+\end{exercise}
+
+% If Sequence of Coefficients is Bounded, Then Radius of Convergence is Positive.
+\begin{exercise}{7.3.5}{}
+
+    Let $(a_k)$ be \emph{bounded} sequence of real numbers. Then $\sum_{k=0}{\infty} a_k x^k$ has \emph{positive} radius of convergence.
+
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Riemann Integration %
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Riemann Integration}
+
+% Differentiable Functions with Bounded Derivatives are Uniformly Continuous.
+\begin{workshop}{\cws{3}{5}}{}
+
+    Let $I \subseteq \mathbb{R}$ be an open interval, $f: I \to \mathbb{R}$ \emph{differentiable} with $f'$ \emph{bounded} on $I$. Then $f$ is \emph{uniformly} continuous.
+
+\end{workshop}
+
+% Uniform Continuity is Equivalent to Function Values Approaching When Sequence Values do.
+\begin{workshop}{\cws{3}{7}}{}
+
+    Let $I \subseteq \mathbb{R}$ be an open interval and let $f: I \to \mathbb{R}$ continuous. Then $f$ \emph{uniformly} continuous $\Leftrightarrow$ whenever sequences $(s_n)$, $(t_n)$ in $I$ are s.t. $|s_n - t_n| \to 0$, then $|f(s_n) - f(t_n)| \to 0$.
+
+\end{workshop}
+
+% Continuous Functions on Closed and Bounded Intervals are Uniformly Continuous.
+\begin{workshop}{\cws{3}{8}}{}
+
+    Let $f: [a,b] \to \mathbb{R}$ continuous. Then $f$ is \emph{uniformly} continuous.
+
+\end{workshop}
+
+% Combinations of Step Functions Give New Step Functions.
+\begin{exercise}{}{Step Function Vector Space}
+
+    The class of step functions is a vector space. Moreover, if $\phi$ and $\psi$ are step functions, then $\max\{\phi,\psi\}$, $\min\{\phi,\psi\}$, $|\phi|$ and $\phi \psi$ are also step functions.
+
+\end{exercise}
+
+% Step Functions are Sums of Characteristic Functions.
+\begin{exercise}{}{Characterising Step Functions}
+
+    Function $\phi$ is a \emph{step function} $\Leftrightarrow$ $\phi$ is of form:
+
+        \begin{align*}
+            \phi(x) = \sum_{j = 1}^n c_j \chi_{I_j}(x)
+        \end{align*}
+
+    where each $I_j$ is a \emph{bounded interval}.
+
+\end{exercise}
+
+% Integral of Step Function is Independent of Set Chosen to Define Step Function.
+\begin{lemma}{}{Set Independence}
+
+    Let $\phi$ be a step function. Then $\int \phi$ is \emph{independent} of the particular set $\{x_0,x_1,\hdots,x_n\}$ with respect to which $\phi$ is a step function.
+
+\end{lemma}
+
+% Integral over Step Function is Linear.
+\begin{proposition}{[Integration, Prop. 1]}{}
+
+    Let $\phi, \psi$ be step functions, $\alpha, \beta \in \mathbb{R}$. Then
+
+        \begin{align*}
+            \int (\alpha \phi + \beta \psi) = \alpha \int \phi + \beta \int \psi.
+        \end{align*}
+
+\end{proposition}
+
+% Integral of Step Functions Preserves Ordering.
+\begin{exercise}{}{Integral Ordering}
+
+    Let $\phi, \psi$ be step functions. Then $\phi \leq \psi$ $\Rightarrow$ $\int \phi \leq \int \psi$.
+
+\end{exercise}
+
+% Riemann-Integrability Equivalent to Step Function Integrals Approaching Above and Below.
+\begin{theorem}{[Integration, Thrm. 1]}{}
+
+    Let $f: \mathbb{R} \to \mathbb{R}$. Then $f$ \emph{Riemann-integrable} $\Leftrightarrow$
+
+        \begin{align*}
+            &\sup\left\{\int \phi: \phi\,\, \textrm{step function}, \phi \leq f\right\} = \\
+            &\inf\left\{\int \psi: \psi\,\, \textrm{step function}, \psi \geq f\right\}.
+        \end{align*}
+
+\end{theorem}
+
+% Calculating Integral Through Limit of Step Function Integrals.
+\begin{theorem}{[Integration, Thrm. 2]}{}
+
+    Let $f: \mathbb{R} \to \mathbb{R}$. Then $f$ is \emph{Riemann-integrable} $\Leftrightarrow$ there exist sequences of step functions $\phi_n$ and $\psi_n$ s.t. $\forall n \in \mathbb{N}: \phi_n \leq f \leq \phi_n$ and
+
+        \begin{align*}
+            \int \psi_n - \int \phi_n \to 0.
+        \end{align*}
+
+    If $\phi_n$ and $\psi_n$ are any sequences of step functions satisfying the above, then
+
+        \begin{align*}
+            \int \phi_n \to \int f \quad \textrm{and} \int \psi_n \to \int f
+        \end{align*}
+
+    as $n \to \infty$.
+
+\end{theorem}
+
+% Estimating the Sum of Powers of Consecutive Integers.
+\begin{exercise}{}{Sum of Powers Estimate}
+
+    Let $n \in \mathbb{N}$, then for any integer $m \geq 1$:
+
+        \begin{align*}
+            \frac{n^{m + 1}}{m + 1} \leq \sum_{j = 1}^n j^m \leq \frac{(n + 1)^{m + 1}}{m + 1}
+        \end{align*}
+
+\end{exercise}
+
+% Riemann-Integrability is Equivalent to Step Integrals Above & Below Getting Arbitrarily Small
+\begin{lemma}{[Integration, Lem. 1]}{}
+
+    Let $f: \mathbb{R} \to \mathbb{R}$ be \emph{bounded} with \emph{bounded support} $[a,b]$. Then the following is equivalent:
+
+        \begin{enumerate}[(i)]
+            \setlength{\parskip}{0em}
+            \item $f$ is \emph{Riemann-integrable};
+            \item $\forall \upvarepsilon > 0$ $\exists\, a = x_0 < \hdots < x_n = b$ s.t. if
+
+                \begin{align*}
+                    M_j = \sup_{x \in I_j} f(x), \quad m_j = \inf_{x \in I_j} f(x) 
+                \end{align*}
+
+            where $I_j = [x_{j-1}, x_j]$, then
+
+                \begin{align*}
+                    \sum_{j=1}^n (M_j - m_j)(x_j - x_{j-1}) < \upvarepsilon;
+                \end{align*}
+
+            \item $\forall \upvarepsilon > 0$ $\exists\, a = x_0 < \hdots < x_n = b$ s.t., with $I_j = (x_{j-1}, x_j)$ for $j \geq 1$:
+
+                \begin{align*}
+                    \sum_{j = 1}^n \sup_{x,y \in I_j} |f(x) - f(y)||I_j| < \upvarepsilon.
+                \end{align*}
+        \end{enumerate}
+
+\end{lemma}
+
+% Integral is Linear & Positive, Non-Linear Combinations of Integrable Functions are Integrable.
+\begin{theorem}{[Integration, Thrm. 3]}{}
+
+    Let $f,g$ be \emph{Riemann-integrable}, $\alpha, \beta \in \mathbb{R}$. Then
+
+        \begin{enumerate}[(a)]
+            \setlength{\parskip}{0em}
+            \item $\alpha f + \beta g$ is \emph{Riemann-integrable} and
+
+                \begin{align*}
+                    \int (\alpha f + \beta g) = \alpha \int f + \beta \int g;
+                \end{align*}
+
+            \item $f \geq 0$ $\Rightarrow$ $\int f \geq 0$ and $f \geq g$ $\Rightarrow$ $\int f \geq \int g$;
+            \item $|f|$ is \emph{Riemann-integrable} and 
+
+                \begin{align*}
+                    \left| \int f \right| \leq \int |f|;
+                \end{align*}
+
+            \item $\max\{f,g\}$ and $\min\{f,g\}$ are \emph{Riemann-integrable};
+            \item $fg$ is \emph{Riemann-integrable}
+        \end{enumerate}
+
+\end{theorem}
+
+% Continuous Functions on Bounded Support are Integrable.
+\begin{theorem}{[Integration, Thrm. 4]}{}
+
+    Let $g: [a,b] \to \mathbb{R}$ be \emph{continuous}, $f(x) = g(x)$ if $x \in [a,b]$, $f(x) = 0$ if $x \not\in [a,b]$. Then $f$ is \emph{Riemann-integrable}.
+
+\end{theorem}
+
+% Fundamental Theorem of Calculus: Differentiation is Inverse Operation to Integration.
+\begin{theorem}{[Integration, Thrm. 5]}{}
+
+    Let $g: [a,b] \to \mathbb{R}$ be \emph{Riemann-integrable}. For $x \in [a,b]$ let
+
+        \begin{align*}
+            G(x) = \int\limits_a^x g.
+        \end{align*}
+
+    Then $g$ \emph{continuous} at some $x \in [a,b]$ $\Rightarrow$ $G$ \emph{differentiable} at $x$ and $G'(x) = g(x)$.
+
+\end{theorem}
+
+\begin{theorem}{[Integration, Thrm. 6]}{}
+
+    Let $f: [a,b] \to \mathbb{R}$ s.t. $f$ has \emph{continuous} derivative $f'$ on $[a,b]$. Then
+
+        \begin{align*}
+            \int\limits_a^b f' = f(b) - f(a).
+        \end{align*}
+
+\end{theorem}
+
+% Integral Test for Convergence.
+\begin{exercise}{}{Integral Test}
+
+    Let $(a_n)$ be a \emph{non-negative} sequence of numbers and $f: [1,\infty) \to (0,\infty)$ s.t.
+
+        \begin{enumerate}[(i)]
+            \setlength{\parskip}{0em}
+            \item $\int_1^n f \leq K$ for some $K$ and all $n$ and
+            \item $a_n \leq f(x)$ for $n \leq x < n+1$.
+        \end{enumerate}
+
+    Then $sum_n a_n$ converges to a real number which is at most $K$.
+
+\end{exercise}
+
+% p-Series Test for Convergence.
+\begin{exercise}{}{p-Series Test}
+
+    For $p > 1$, $\sum 1/n^p$ converges.
+
+\end{exercise}
+
+% Riemann-Integrable Functions are Bounded and Zero Outside an Interval.
+\begin{workshop}{\cws{5}{1}}{}
+
+    Let $f: \mathbb{R} \to \mathbb{R}$ be \emph{Riemann-integrable}. Then $f$ is \emph{bounded} with \emph{bounded support}.
+
+\end{workshop}
+
+% Integral of Continuous, Non-Negative Function Can Only be Zero if Function is Zero.
+\begin{workshop}{\cws{5}{7}}{}
+
+    Let $g: [a,b] \to \mathbb{R}$, $a < b$, be \emph{continuous} and \emph{non-negative}. Then $\int_a^b g = $ $\Rightarrow$ $g = 0$ on $[a,b]$.
+
+\end{workshop}
+
+\begin{exercise}{5.2.0 (b)}{}
+
+    Let $f$ be \emph{Riemann-integrable}, $P$ \emph{any polynomial}, then $P \circ f$ is \emph{Riemann-integrable}.
+
+    \Hint $f$ R-integrable $\Rightarrow$ $f^n$ is R-integrable by Thrm. 3 linearity.
+
+\end{exercise}
+
+\begin{exercise}{5.2.6}{}
+
+    (a) Let $g_n \geq 0$ sequence of \emph{Riemann-integrable} functions on $[a,b]$ s.t.
+
+        \begin{align*}
+            \lim_{n \to \infty} \int\limits_a^b g_n = 0
+        \end{align*}
+
+    Then $f$ \emph{Riemann-integrable} on $[a,b]$ $\Rightarrow$ 
+
+        \begin{align*}
+            \lim_{n \to \infty} \int\limits_a^b fg_n = 0
+        \end{align*}
+
+    \Hint $f$ is bounded $\Rightarrow$ $fg_n$ is bounded \& Squeeze Thrm.
+
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%
+% Metric Spaces %
+%%%%%%%%%%%%%%%%%
+
+\section{Metric Spaces}
+
+% Usual Metric on R^n.
+\begin{example}{\cw{10.2}}{}
+
+    Every Euclidean space $\mathbb{R}^n$ is a metric space with the \emph{usual metric} $\rho(\vec{x},\vec{y}) = \norm{\vec{x} - \vec{y}}$.
+
+\end{example}
+
+% Discrete Metric on R.
+\begin{definition}{\cw{10.3}}{}
+
+    $\mathbb{R}$ is a metric space with the \emph{discrete metric}:
+
+        \begin{align*}
+            \sigma(x,y) =
+            \begin{cases}
+                0 & x = y, \\
+                1 & x \neq y
+            \end{cases}
+        \end{align*}
+
+\end{definition}
+
+% Subspaces of Metric Spaces.
+\begin{example}{\cw{10.4}}{}
+
+    Let $(X,\rho)$ be a metric space and $E \subseteq X$. Then $E$ is a metric space with metric $\rho$, called a \emph{subspace} of $X$.
+
+\end{example}
+
+% In a Compact Set, Every Sequence has Convergent Subsequence to Limit in Set.
+\begin{exercise}{10.4.10a}{}
+
+    $E \subset X$ \emph{compact} $\Rightarrow$ $E$ \emph{sequentially compact}.
+
+    \Hint Arbitrary $x \in $, $S = \{n \in \mathbb{N}: x_n \in B_{r(x)}(x)\}$ must be finite for $(x_n)$ not to have convergent subsequence. $E$ has open cover $\{B_r(x_i): 1 \leq i \leq k\}$ $\Rightarrow$ $\exists \, i$ s.t. $B_r(x_i)$ infinite $\Rightarrow$ contradicts $S$ finite.
+
+\end{exercise}
+
+% Metric Space of Continuous Functions on Closed & Bounded Interval.
+\begin{example}{\cw{10.6}}{}
+
+    Let $\mathcal{C}[a,b]$ be the set of \emph{continuous} functions $f: [a,b] \to \mathbb{R}$ and
+
+        \begin{align*}
+            \norm{f} \coloneqq \sup_{x \in [a,b]} |f(x)|
+        \end{align*}
+
+    Then $\rho(f,g) \coloneqq \norm{f - g}$ is a metric on $\mathcal{C}[a,b]$. N.B.: Convergence in this metric spaces means \emph{uniform} convergence.
+
+\end{example}
+
+% Open Balls are Open Sets, Closed Balls are Closed Sets.
+\begin{remark}{\cw{10.9}}{}
+
+    Every open ball is \emph{open}, every closed ball is \emph{closed}.
+
+\end{remark}
+
+% Singleton Sets are Closed so Removing One Element Creates Open Set.
+\begin{remark}{\cw{10.10}}{}
+
+    Let $a \in X$. Then $X \setminus \{a\}$ is \emph{open} and $\{a\}$ is \emph{closed}.
+
+\end{remark}
+
+% The Whole Space and The Empty Set are Always Open & Closed.
+\begin{remark}{\cw{10.11}}{}
+
+    Let $(X,\rho)$ be an \emph{arbitrary} metric space. Then $\emptyset$ and $X$ are \emph{both open \& closed}.
+
+\end{remark}
+
+% Discrete Metric Creates Only Simultaneously Open & Closed Subsets.
+\begin{example}{\cw{10.12}}{}
+
+    \emph{Every} subset of \emph{discrete} space $\mathbb{R}$ is \emph{both open \& closed}.
+
+\end{example}
+
+% Sequences Have At Most One Limit, Subsequences Converge to Limit of Supersequences & Convergent Sequences are both Bounded & Cauchy.
+\begin{theorem}{\cw{10.14}}{}
+
+    Let $X$ be a metric space.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item A sequence in $X$ can have \emph{at most one} limit.
+            \item If $\{x_n\}$ in $X$ converges to $a$ and $\{x_{n_k}\}$ is \emph{any subsequence} of $\{x_n\}$, then $\{x_{n_k}\}$ converges to $a$ as well.
+            \item $\{x_n\}$ in $X$ is \emph{convergent} $\Rightarrow$ $\{x_n\}$ is \emph{bounded}
+            \item $\{x_n\}$ in $X$ is \emph{convergent} $\Rightarrow$ $\{x_n\}$ is \emph{Cauchy}
+        \end{enumerate}
+
+\end{theorem}
+
+% For the Limit of a Sequence There Always Exists an Open Set Around it s.t. an Element of the Sequence Lies Inside it.
+\begin{remark}{\cw{10.15}}{}
+
+    Let $\{x_n\}$ in $X$. Then $x_n \to a$ as $n \to \infty$ $\Leftrightarrow$ for \emph{every open set} $V$ s.t. $a \in V$ $\exists N \in \mathbb{N}$ s.t. $n \geq N$ $\Rightarrow$ $x_n \in V$.
+
+\end{remark}
+
+% Closed Sets are Exactly the Sets Containing All Possible Limit Points.
+\begin{theorem}{\cw{10.16}}{}
+
+    Let $E \subseteq X$. Then $E$ is \emph{closed} $\Leftrightarrow$ the limit of \emph{every convergent} sequence $\{x_k\}$ in $E$ \emph{lies in} $E$, i.e.:
+
+        \begin{align*}
+            \lim_{k \to \infty} x_k \in E
+        \end{align*}
+
+\end{theorem}
+
+% Bounded Sequence with No Convergent Subsequence.
+\begin{remark}{\cw{10.17}}{}
+
+    The discrete space contains \emph{bounded} sequences with have \emph{no convergent subsequences}, e.g. $\{k\}$ with $k \in \mathbb{N}$.
+
+\end{remark}
+
+% Cauchy Sequence that Does Not Converge.
+\begin{remark}{\cw{10.18}}{}
+
+    The metric space $\mathbb{Q}$ with usual metric contains \emph{Cauchy sequences} which do \emph{not converge}, e.g. $\{q_k\}$ in $\mathbb{Q}$ s.t. $q_k \to \sqrt{2}$.
+
+\end{remark}
+
+% In Discrete Metric Space, Convergent Sequences Are Eventually Constant.
+\begin{exercise}{10.1.4}{}
+
+    In \emph{discrete} metric space, $x_n \to a$ as $n \to \infty$ $\Leftrightarrow$ $x_n = a$ for $n$ large.
+
+\end{exercise}
+
+% If Sequences Converge to Same Limit, Their Elements Come Arbitrarily Close.
+\begin{exercise}{10.1.5}{}
+
+    Let $x_n$, $y_n$ sequences in $(X,\rho)$ converge to same limit $a \in X$. Then $\rho(x_n,y_n) \to 0$ as $n \to \infty$. The \emph{converse} is \emph{false}, e.g. $x_n = y_n = n$.
+
+\end{exercise}
+
+% Cauchy Sequences with Convergent Subsequences Must Converge.
+\begin{exercise}{10.1.6}{}
+
+    Let $(x_n)$ be \emph{Cauchy} in $X$. Then $(x_n)$ \emph{converges} $\Leftrightarrow$ $(x_n)$ has a \emph{convergent subsequence}.
+
+\end{exercise}
+
+% In Complete Metric Spaces, Cauchy Sequences are Equivalent to Converging Sequences.
+\begin{remark}{\cw{10.20}}{}
+
+    If $X$ is a \emph{complete} metric space, then
+
+        \begin{enumerate}[1)]
+            \setlength{\parskip}{0em}
+            \item \emph{every Cauchy} sequence in $X$ \emph{converges};
+            \item the limit of \emph{every Cauchy} sequence in $X$ \emph{stays in} $X$.
+        \end{enumerate}
+
+\end{remark}
+
+% For Complete Metric Space, Closed Sets are Equivalent to Complete Subspaces.
+\begin{theorem}{\cw{10.21}}{}
+
+    Let $X$ be a \emph{complete} metric space and $E \subseteq X$. Then $E$ is \emph{complete} $\Leftrightarrow$ $E$ is \emph{closed}.
+
+\end{theorem}
+
+% Simple Criterion if Point is Cluster Point in Metric Subspace.
+\begin{remark}{}{Cluster Point in Subspace}
+
+    Let $E \subseteq X$ be a \emph{subspace} of $X$. The $a \in E$ is a \emph{cluster point} in $E$ $\Leftrightarrow$ $\forall \delta > 0$, the \emph{relative ball} $B_{\delta}(a) \cap E$ contains \emph{infinitely} many points.
+
+\end{remark}
+
+% Properties of Limits of Functions Over Arbitrary Metric Spaces.
+\begin{theorem}{\cw{10.26}}{}
+
+    Let $a \in X$ be a \emph{cluster point} and $f,g : X \setminus \{a\} \to Y$.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item $\forall x \in X \setminus \{a\}: f(x) = g(x)$ and $f(x)$ has a limit as $x \to a$ $\Rightarrow$ $g(x)$ has a limit as $x \to a$ and
+
+                \begin{align*}
+                    \lim_{x \to a} g(x) = \lim_{x \to a} f(x).
+                \end{align*}
+
+            \item \emph{Sequential Characterization of Limits:}
+
+                \begin{align*}
+                    L \coloneqq \lim_{x \to a} f(x)
+                \end{align*}
+
+            \emph{exists} $\Leftrightarrow$ $f(x_n) \to L$ as $n \to \infty$ for \emph{every} sequence $\{x_n\}$ in $X \setminus \{a\}$ s.t. $x_n \to a$ as $n \to \infty$.
+
+            \item Let $Y = \mathbb{R}^n$. $f(x)$ and $g(x)$ have a limit as $x \to a$ $\Rightarrow$ $(f+g)(x)$, $(fg)(x)$, $(\alpha f)(x)$ and if $Y = \mathbb{R}$ and limit of $g(x) \neq 0$ also $(f/g)(x)$ have limits. In this case, the usual algebra of limits applies.
+
+            \item \emph{Squeeze Theorem:} Let $Y = \mathbb{R}$. Let $h: X \setminus \{a\} \to \mathbb{R}$ s.t. $\forall x \in X \setminus \{a\}:$ $g(x) \leq h(x) \leq f(x)$ and
+
+                \begin{align*}
+                    \lim_{x \to a} g(x) = \lim_{x \to a} f(x) = L
+                \end{align*}
+
+            $\Rightarrow$ limit of $h$ as $x \to a$ exists and
+
+                \begin{align*}
+                    \lim_{x \to a} h(x) = L.
+                \end{align*}
+
+            \item \emph{Comparison Theorem:} Let $Y = \mathbb{R}$. $\forall x \in X \setminus \{a\}: f(x) \leq g(x)$ and $f,g$ have a limit as $x \to a$, then
+
+                \begin{align*}
+                    \lim_{x \to a} f(x) \leq \lim_{x \to a} g(x).
+                \end{align*}
+        \end{enumerate}
+
+\end{theorem}
+
+% Continuous Functions Preserve Sequence Limits, Combinations of Continuous Functions are Continuous.
+\begin{theorem}{\cw{10.28}}{}
+
+    Let $E \subseteq X$, non-empty, and $f,g : E \to Y$.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item $f$ \emph{continuous at $a \in E$} $\Leftrightarrow$ $f(x_n) \to f(a)$ as $n \to \infty$ for \emph{every} sequence $\{x_n\}$ in $E$ s.t. $x_n \to a$.
+            \item Let $Y = \mathbb{R}^n$. $f,g$ \emph{continuous at $a \in E$} $\Rightarrow$ $f + g$, $fg$, $\alpha f$, for $\alpha \in \mathbb{R}$ are \emph{continuous at $a \in E$}. Also, if $Y = \mathbb{R}$ and $g(a) \neq 0$, then $f/g$ \emph{continuous at $a \in E$}.
+        \end{enumerate}
+
+\end{theorem}
+
+% Limit of a Composition is Outer Function at Limit of Inner Function.
+\begin{theorem}{\cw{10.29}}{}
+
+    Let $X,Y,Z$ be metric spaces and $a \in X$ a \emph{cluster point}. Let $f: X \to Y$, $g: f(X) \to Z$. $f(x) \to L$ as $x \to a$ and $g$ \emph{continuous at $L$} $\Rightarrow$
+
+        \begin{align*}
+            \lim_{x \to a} (g \circ f)(x) = g\left( \lim_{x \to a} f(x) \right).
+        \end{align*}
+
+\end{theorem}
+
+% Isolated Points and Cluster Points are Opposites.
+\begin{exercise}{10.2.2}{}
+
+    Let $(X,d)$ be a metric space.
+
+        \begin{enumerate}[a)]
+            \setlength{\parskip}{0em}
+            \item $a \in X$ \emph{isolated} $\Leftrightarrow$ $a$ \emph{not cluster point} in $X$.
+            \item Discrete metric space has \emph{no cluster points}.
+        \end{enumerate}
+
+    \Hint a) $(\Leftarrow)$ not cluster $\Rightarrow$ $B_r(a)$ finitely many elements, take $\rho$ minimum of distance of those to $a$, then $X \cap B_{\rho}(a) = \{a\}$.
+
+\end{exercise}
+
+% Every Cluster Point is the Limit of Some Sequence.
+\begin{exercise}{10.2.3}{}
+
+    Let $E \subseteq X$. Then $a$ is a \emph{cluster point} $\Leftrightarrow$ there \emph{exists} sequence $(x_n)$ in $E \setminus \{a\}$ s.t. $x_n \to a$ as $n \to n$.
+
+    \Hint $(\Rightarrow)$ $x_n \in E \cap B_{\frac{1}{n}}(a)$, $(\Leftarrow)$ $E \cap B_r(a)$ infinite as $a \neq x_n$.
+
+\end{exercise}
+
+% Point is Cluster Point Exactly When Relative Open Ball Minus Point is Never Empty.
+\begin{exercise}{10.2.4}{}
+
+    \begin{enumerate}[a)]
+        \setlength{\parskip}{0em}
+        \item Let $E \subseteq X$, non-empty. Then $a$ is a \emph{cluster point} for of $E$ $\Leftrightarrow$ $\forall r > 0:$ $(E \cap B_r(a)) \setminus \{a\} \neq \emptyset$.
+        \item Every \emph{bound infinite subset} of $\mathbb{R}$ has \emph{at least one} cluster point.
+    \end{enumerate}
+
+    \Hint a) $(\Leftarrow)$ $x_n \in (E \cap B_{\frac{1}{n}}(a)) \setminus \{a\}$ and Ex. 10.2.3. b) $(x_n)$ sequence in $E$ and Bolzano-Weierstrass.
+
+\end{exercise}
+
+% Strong Equivalence of Metrics Implies Equivalence of Metrics.
+\begin{workshop}{\cws{7}{5}}{}
+
+    Metrics $d$, $\rho$ \emph{strongly equivalent} $\Rightarrow$ $d$, $\rho$ \emph{equivalent}.
+
+\end{workshop}
+
+% Metrics Are Equivalent Exactly When Open Sets are Open Under Both of Them.
+% Openess is Invariant Under Equivalent Matrices.
+\begin{workshop}{\cws{7}{7}}{}
+
+    Let $d$, $\rho$ be metrics on $X$. Then $d$, $\rho$ \emph{equivalent} $\Leftrightarrow$ \emph{every} subset of $X$ \emph{open} with respect to $d$ is \emph{also open} with respect to $\rho$ \emph{and vice-versa}.
+
+\end{workshop}
+
+% Compact Sets can be Covered by Finitely Many Open Balls of any Radius.
+\begin{workshop}{\cws{8}{11}}{}
+
+    $X$ \emph{compact} $\Rightarrow$ $\forall r > 0$, $X$ can be covered by \emph{finitely} many open balls of radius $r$.
+
+    \Hint Consider open cover of open balls of radius $r$.
+
+\end{workshop}
+
+% Compact Metric Spaces are Complete.
+% Compactness is Equivalent to Completeness with Finite Open Ball Cover.
+\begin{workshop}{\cws{8}{12}}{}
+
+    Let $X$ be \emph{compact}. Then $X$ is \emph{complete}. Additionally, $X$ \emph{compact} $\Leftrightarrow$ $X$ is \emph{complete} \emph{and} can be covered by finitely many open balls of radius $r$ for any $r > 0$.
+
+    \Hint $X$ compact $\Rightarrow$ sequentially compact, so $(x_n)$ Cauchy sequence has convergent subsequence $(x_n)$ converges.
+
+\end{workshop}
+
+% Compactness is Equivalent to any Sequence Having Convergent Subsequence.
+\begin{workshop}{\cws{8}{13}}{}
+
+    $X$ \emph{compact} $\Leftrightarrow$ $X$ \emph{sequentially compact}.
+
+    \Hint Take $(x_n)$ Cauchy, has convergent subsequence by assumption $\Rightarrow$ converges $\Rightarrow$ $X$ complete. Only need show that $\exists$ cover with finite number open balls. Assume none exists for $r > 0$. Pick $x_1 \in X$. Pick $x_2 \in X$ s.t. $d(x_1,x_2) > r$, repeat to get $(x_n)$ s.t. $d(x_m,x_n) > r$ $\forall m,n$ $\Rightarrow$ not convergent $\Rightarrow$ contradiction.
+
+\end{workshop}
+
+%%%%%%%%%%%%
+% Topology %
+%%%%%%%%%%%%
+
+\section{Topology}
+
+% Unions & Intersections of Open & Closed Sets Being Open & Closed.
+\begin{theorem}{\cw{10.31}}{}
+
+    Let $X$ be a metric space.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item The \emph{union} of \emph{any collection} of \emph{open} sets in $X$ is \emph{open};
+            \item The \emph{intersection} of a \emph{finite collection} of \emph{open} sets in $X$ is \emph{open};
+
+            \item The \emph{intersection} of \emph{any collection} of \emph{closed} sets in $X$ is \emph{closed};
+            \item The \emph{union} of a \emph{finite collection} of \emph{closed} sets in $X$ is \emph{closed};
+            \item Let $V \subseteq X$ be \emph{open}, $E \subseteq X$ be \emph{closed}. Then $V \setminus E$ is \emph{open}, $E \setminus V$ is \emph{closed}.
+        \end{enumerate}
+
+\end{theorem}
+
+% Arbitrary Intersection Open Sets Can Become Singleton Set (Closed).
+% Arbitrary Union Closed Sets Can Tend to Open Interval (Open).
+\begin{remark}{10.32}{}
+
+    The \emph{intersection} of \emph{any collection} of \emph{open} sets is \emph{not} necessarily \emph{open}, e.g.
+
+        \begin{align*}
+            \bigcap_{k \in \mathbb{N}} \left(-\frac{1}{k},\frac{1}{k}\right) = \{0\}.
+        \end{align*}
+
+    The \emph{union} of \emph{any collection} of \emph{closed} sets is \emph{not} necessarily \emph{closed}, e.g.
+
+        \begin{align*}
+            \bigcup_{k \in \mathbb{N}} \left[\frac{1}{k + 1},\frac{k}{k + 1}\right] = (0,1).
+        \end{align*}
+
+\end{remark}
+
+% Interior is Largest Open Set Contained in Subset, Closure is Smallest Closed Set Containing Subset.
+\begin{theorem}{\cw{10.34}}{}
+
+    Let $E \subseteq X$. Then
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item $E^o \subseteq E \subseteq \overline{E}$;
+            \item $V$ \emph{open} and $V \subseteq E$ $\Rightarrow$ $V \subseteq E^o$.
+            \item $C$ \emph{closed} and $C \supseteq E$ $\Rightarrow$ $C \supseteq E$.
+        \end{enumerate}
+
+\end{theorem}
+
+% The Boundary is the Closure Minus the Interior.
+\begin{theorem}{\cw{10.39}}{}
+
+    Let $E \subseteq X$. Then $\partial E = \overline{E} \setminus E^o$.
+
+\end{theorem}
+
+% Set Operations and Topology of Subsets.
+\begin{theorem}{\cw{10.40}}{}
+
+    Let $A,B \subseteq X$. Then
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item $(A \cup B)^o \supseteq A^o \cup B^o$, $(A \cap B)^o = A^o \cap B^o$;
+            \item $\overline{A \cup B} = \overline{A} \cup \overline{B}$, $\overline{A \cap B} \subseteq \overline{A} \cap \overline{B}$;
+            \item $\partial (A \cup B) \subseteq \partial A \cup \partial B$, $\partial (A \cap B) \subseteq (A \cap \partial B) \cup (B \cap \partial A) \cup (\partial A \cap \partial B)$.
+        \end{enumerate}
+
+\end{theorem}
+
+% Interior and Closure have Same Subsetrelationship as Sets Themselves.
+\begin{exercise}{10.3.4}{}
+
+    Let $A \subseteq B \subseteq X$. Then $\overline{A} \subseteq \overline{B}$ \& $A^o \subseteq B^o$.
+
+\end{exercise}
+
+% Trivial Compact Sets in Metric Space.
+\begin{remark}{\cw{10.43}}{}
+
+    The empty set and \emph{all finite} subsets of a metric space are \emph{compact}.
+
+\end{remark}
+
+% All Compact Sets are Closed.
+\begin{remark}{10.44}{}
+
+    Every \emph{compact} set is \emph{closed}.
+
+    \Hint Assume $H$ compact \& not closed $\Rightarrow$ $\exists$ sequence with limit $x$ not in $H$. $y \in H$ and $r(y) \coloneqq \rho(x,y)/2$, $x \neq H$ $\Rightarrow$ $r(y) > 0$. Open cover of $B_{r(y)}(y)$ w/ finite subcover $\{B_{r(y_j)}(y_j)\}$. $r = \min\{r(y_j)\}$. $x_k \to x$ $\Rightarrow$ $x_k \in B_r(x)$ for $k$ large. $x_k \in B_r(x) \cap H$ $\Rightarrow$ $x_k \in B_{r(y_j)}(y_j)$ for some $j$. Then with $r_j \geq$ $\rho(x_k,y_j) \geq$ $\rho(x,y_j) - \rho(x_k,x) =$ $2r_j - \rho(x_k,x) >$ $2r_j - r \geq$ $2r_j - r_j$ $\Rightarrow$ contradiction. 
+
+\end{remark}
+
+% Closed Subsets of Compact Sets are Compact.
+\begin{remark}{\cw{10.46}}{}
+
+    Every \emph{closed subset} of a \emph{compact} set is \emph{compact}.
+
+    \Hint $E \subseteq H$ closed w/ $H$ compact s.t. $\mathcal{V}$ is open cover of $E$. $E^c = X \setminus E$ open $\Rightarrow$ $\mathcal{V} \cup E^c$ cover $H$. $H$ compact $\Rightarrow$ finite subcover $\mathcal{V}_0$ and $H \subseteq E^c \cup \mathcal{V}_0$, but $E \cap E^c = \emptyset$ $\Rightarrow$ $\mathcal{V}_0$ finite subcover of $E$.
+
+\end{remark}
+
+% Compact Sets are Closed & Bounded.
+\begin{theorem}{\cw{10.46}}{}
+
+    Let $H \subseteq X$, $X$ being a metric space. $H$ \emph{compact} $\Rightarrow$ $H$ \emph{closed \& bounded}.
+
+\end{theorem}
+
+\begin{remark}{10.47}{}
+
+    Given an \emph{arbitrary} metric space, \emph{closed \& bounded} $\not\Rightarrow$ \emph{compact} in general.
+
+\end{remark}
+
+% Intersection & Union of Compact Sets are Compact.
+\begin{exercise}{10.4.2}{}
+
+    Let $A,B \subseteq X$ be \emph{compact}. Then $A \cup B$ and $A \cap B$ are \emph{compact}.
+
+    \Hint Combine subcovers for $A \cup B$; note $A \cap B \subset A$ closed \& Thrm. 10.46.
+
+\end{exercise}
+
+% Compact Sets in R Include Supremum and Infimum.
+\begin{exercise}{10.4.3}{}
+
+    Let $E \subseteq \mathbb{R}$ be \emph{compact} and non-empty. Then $\sup{E}$ and $\inf{E}$ belong to $E$.
+
+    \Hint Existence by boundedness. Approximation Property gives $\sup{E} \leq x_n \leq \sup{E} + 1/n$ and Squeeze Theorem.
+
+\end{exercise}
+
+% Intersection of Nested Compact Sets Cannot be Empty.
+\begin{exercise}{10.4.8}{}
+
+    (a) \emph{Cantor Intersection Theorem:} Let $H_{k+1} \subseteq H_k$ be \emph{nested} sequence of \emph{compact, non-empty} sets in metric space $X$. Then $\bigcap_{k=1}^{\infty} H_k \neq \emptyset$.
+
+    \Hint Assume $\bigcap_{k=1}^{\infty} H_k = \emptyset$. $\{H_k^c\}$ open cover of $H_1$ $\Rightarrow$ finite subcover $H_{k_i}$, $1 \leq i \leq n$. $H_k$ nested $\Rightarrow$ $H_k^c$ nested $\Rightarrow$ $s = \max\{k_{i}\}$ then $H_1 \subset H_s^c$ $\Rightarrow$ $\emptyset = H_s \cap H_1 = H_s$, contradiction.
+
+\end{exercise}
+
+% Subset is Not Connected if Open Sets in Superset Partition it.
+\begin{remark}{\cw{10.55}}{}
+
+    Let $E \subseteq X$. If $\exists \, A,B \subseteq X$, both \emph{open} s.t.
+
+%        \begin{enumerate}[i)]
+%            \setlength{\parskip}{0em}
+%            \item $E \subseteq A \cup B$;
+%            \item $A \cap B = \emptyset$;
+%            \item $A \cap E \neq \emptyset$;
+%            \item $B \cap E \neq \emptyset$
+%        \end{enumerate}
+
+        \begin{align*}
+            E \subseteq A \cup B, \quad A \cap B = \emptyset \\
+            A \cap E \neq \emptyset, \quad B \cap E \neq \emptyset
+        \end{align*}
+
+    i.e. $A,B$ \emph{separate} $E$, then $E$ is \emph{not connected}.
+
+\end{remark}
+
+% Connected Sets in R are Exactly Intervals and Vice-Versa.
+\begin{theorem}{\cw{10.56}}{}
+
+    $E \subseteq \mathbb{R}$ is \emph{connected} $\Leftrightarrow$ $E$ is an \emph{interval}.
+
+\end{theorem}
+
+% Open Ball Around Point of Continuity is Contained in Preimage of Open Ball Around Function value.
+\begin{remark}{}{Preimage of Open Balls}
+
+    Let $X,Y$ be metric spaces and $f: X \to Y$. Then $f$ is \emph{continuous} $\Leftrightarrow$
+
+        \begin{align*}
+            B_{\delta}(a) \subseteq f^{-1}(B_{\upvarepsilon}(f(a))).
+        \end{align*}
+
+\end{remark}
+
+% Continuity is Equivalent to Inverse Mapping Open Sets to Open Sets.
+\begin{theorem}{\cw{10.58}}{}
+
+    Let $f: X \to Y$. Then $f$ \emph{continuous} $\Leftrightarrow$ $f^{-1}(V)$ is \emph{open} in $X$ for \emph{every open} $V$ in $Y$.
+
+    \Hint $(\Rightarrow)$ $f^{-1}(V)$ non-empty, let $a \in f^{-1}(V)$, i.e. $f(a) \in V$ $\Rightarrow$ choose $\upvarepsilon$ s.t. $B_{\upvarepsilon}(f(a)) \subseteq V$. $f$ continuous $\Rightarrow$ choose $\delta$ s.t. $B_{\delta}(a) \subseteq f^{-1}(B_{\upvarepsilon}(f(a)))$. $(\Leftarrow)$ $\upvarepsilon > 0$, $a \in X$. $V = B_{\upvarepsilon}(f(a))$ open and by assumption $f^{-1}(V)$ open. $a \in f^{-1}(V)$ $\Rightarrow$ $\exists \, \delta > 0$ s.t. $B_{\delta}(a) \subseteq f^{-1}(V)$ $\Rightarrow$ $f$ continuous.
+
+\end{theorem}
+
+% Continuity on Subsets is Equivalent to Inverse Mapping Open Sets to Relatively Open Sets.
+\begin{corollary}{\cw{10.59}}{}
+
+    Let $E \subseteq X$ and $f: E \to Y$. Then $f$ \emph{continuous} on $E$ $\Leftrightarrow$ $f^{-1}(V) \cap E$ is \emph{relatively open} in $E$ for \emph{every open} $V$ in $Y$.
+
+\end{corollary}
+
+% Inverses of Continuous Functions Map Open/Closed Sets to Open/Closed Sets.
+\begin{remark}{}{Continuous Inverse Invariance}
+
+    Open \& Closed sets are invariant under inverse images by \emph{continuous} functions.
+
+\end{remark}
+
+% A Set Squeezed Between a Connected Set and its Closure is Connected.
+\begin{exercise}{10.5.5}{}
+
+    Let $E \subseteq X$ and $E \subseteq A \subseteq \overline{E}$ and $E$ \emph{connected}. Then $A$ is \emph{connected}.
+
+    \Hint Assume $A$ disconnected then Remark 10.55 for $A$. $U \cap E \neq \emptyset$ by contradiction $\Rightarrow$ $\exists \, x \in U$ s.t. $x \in A \setminus E$. $A \subset \overline{E}$ $\Rightarrow$ $x$ cluster point of $E$ $\Rightarrow$ $\exists \, r > 0$ s.t. $B_r(x) \subset U$ with infinitely many points from $E$ so $E \cap U \neq \emptyset$. Similarly $E \cap V \neq \emptyset$ $\Rightarrow$ contradicts $E$ connected.
+
+\end{exercise}
+
+% Union of Intersecting Connected Sets is Connected.
+\begin{exercise}{10.5.11}{}
+
+    Let $\{E_{\alpha}\}_{\alpha \in A}$ collection of \emph{connected} sets s.t. $\bigcap_{\alpha \in A} E_{\alpha} \neq \emptyset$. Then $\bigcup_{\alpha \in A} E_{\alpha}$ is \emph{connected}.
+
+    \Hint Contradiction and Remark 10.55.
+
+\end{exercise}
+
+% Continuous Functions Map Compact Sets to Compact Sets.
+\begin{theorem}{\cw{10.61}}{}
+
+    $H \subseteq X$ \emph{compact} and $f: H \to Y$ \emph{continuous} $\Rightarrow$ $f(H)$ \emph{compact} in $Y$.
+
+\end{theorem}
+
+% Continuous Functions Map Connected Sets to Connected Sets.
+\begin{theorem}{\cw{10.62}}{}
+
+    $E \subseteq X$ \emph{connected} and $f: E \to Y$ \emph{continuous} $\Rightarrow$ $f(E)$ \emph{connected} in $Y$.
+
+\end{theorem}
+
+% A Continuous Function From a Compact Set to R Attains its Minimum & Maximum.
+\begin{theorem}{\cw{10.63}}{Extreme Value Theorem}
+
+    Let $H \subseteq X$, \emph{non-empty \& compact} and $f: H \to \mathbb{R}$ \emph{continuous}. Then
+
+        \begin{align*}
+            M &\coloneqq \sup\{f(x) : x \in H\}, \\
+            m &\coloneqq \inf\{f(x) : x \in H\}
+        \end{align*}
+
+    are \emph{finite real} numbers and $\exists \, x_M,x_m \in H$ s.t. $M = f(x_M)$ and $m = f(x_m)$.
+
+\end{theorem}
+
+% Inverse on a Compact Set of Injective & Continuous Function is Continuous.
+\begin{theorem}{\cw{10.64}}{}
+
+    Let $H \subseteq X$ be \emph{compact} and $f: H \to Y$ \emph{injective (1-1) \& continuous}. Then $f^{-1}$ is \emph{continuous} on $f(H)$.
+
+\end{theorem}
+
+% Open & Connected Subsets of R^n are Path-Connected.
+\begin{workshop}{\cws{11}{2-5}}{}
+
+    Every \emph{open, connected} set in $\mathbb{R}^n$ is \emph{path-connected}.
+
+    \Hint $U$ set of $x,y \in E$ s.t. path exists, $V$ s.t. does not. Show $E \subset U \cup V$, $U \cap V = \emptyset$, $U \cap E \neq \emptyset$. $U$ is path-connected. Show $U,V$ are open, $y \in U$ and as $E$ open $B_r(y) \subseteq E$, let $z \in B_r(y)$ then $x,z$ path-connected as $x,y$ are. Similar reasoning for $V$ open.
+
+\end{workshop}
+
+% Intermediate Value Theorem From Arbitrary Metric Space.
+\begin{exercise}{10.6.5}{Intermediate Value Theorem}
+
+    Let $E \subseteq X$ be \emph{connected}, $f: E \to \mathbb{R}$ \emph{continuous} and $a,b \in E$ with $f(a) < f(b)$. Then $\forall y$ s.t. $f(a) < y < f(b)$ $\exists x \in E$ s.t. $f(x) = y$
+
+    \Hint $E$ connected, $f$ continuous $\Rightarrow$ $f(E)$ connected and as subset of $\mathbb{R}$ is interval, so $[f(a),f(b)] \subset f(E)$. So $f(a) < y < f(b)$ $\Rightarrow$ $y \in f(E)$.
+
+\end{exercise}
+
+\begin{exercise}{10.6.9}{}
+
+    Let $X$ be \emph{connected}. Then $f: X \to \mathbb{R}$ \emph{non-constant, continuous} $\Rightarrow$ $X$ \emph{uncountably} many points.
+
+    \Hint Connected subsets in $\mathbb{R}$ are intervals $(a,b)$ and $g: (a,b) \to X$ is injective, so $g((a,b)) \subset X$ same size as $(a,b)$.
+
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Contraction Mappings %
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Contraction Mappings}
+
+% Contractions are Continuous.
+\begin{exercise}{[Contraction Mapping]}{}
+
+    Let $f$ be a \emph{contraction}. Then $f$ is \emph{continuous}.
+
+\end{exercise}
+
+% A Contraction on a Complete Metric Space 
+\begin{theorem}{}{Banach's Contraction Mapping Theorem}
+
+    Let $(X,d)$ be a \emph{complete} metric space, $f: X \to X$ a \emph{contraction}. Then there \emph{exists unique} $x \in X$ s.t. $f(x) = x$.
+
+    N.B.: It is important that $f(X) \subseteq X$.
+
+    \Hint Pick $x_0 \in X$ and $f(x_n) = x_{n+1}$ as contraction $\Rightarrow$ $d(x_n,x_{n+1}) \leq \alpha^n d(x_0,x_1)$. Use triangle inequality \& finite geometric series to show $d(x_m,x_n) \leq \displaystyle \frac{\alpha^n}{1 - \alpha} d(x_0,x_1)$ $\Rightarrow$ $(x_n)$ Cauchy, as $X$ complete $\Rightarrow$ $(x_n)$ converges to $x \in X$. $f$ continuous $\Rightarrow$ $f(x) = $ $f(\lim x_n) = $ $\lim f(x_n) = $ $\lim x_{n+1} = $ $x$. Uniqueness: $x,y \in X$, $f(x) = x$ \& $f(y) = y$ $\Rightarrow$ $d(x,y) =$ $d(f(x),f(y)) \leq $ $\alpha d(x,y)$ $\Rightarrow$ $d(x,y) = 0$.
+
+\end{theorem}
+
+% If a Power of a Function is a Contraction Then Function Has a Fixed Point.
+\begin{exercise}{[Contraction Mapping]}{}
+
+    Let $(X,d)$ be a \emph{complete} metric space and $f: X \to X$ s.t. $f^{(n)} = f \circ f \circ \hdots \circ f$ a \emph{contraction}. Then $f$ has a \emph{unique fixed point}.
+
+    N.B.: $f$ itself may not be a contraction.
+
+\end{exercise}
+
+% A Function Contracting by Constant 1 on Compact Metric Space has Fixed Point.
+\begin{workshop}{\cws{10}{8}}{}
+
+    Let $(X,d)$ be \emph{compact} and $f: X \to X$ s.t. $d(f(x),f(y)) \leq d(x,y)$ for all $x \neq y \in X$. Then $f$ has a \emph{unique} fixed point.
+
+    \Hint $\phi(x) = d(x,f(x))$, continuous, so image is closed \& bounded subset of $\mathbb{R}$ as $X$ compact. $f$ without fixed point $\Rightarrow$ $\phi > 0$ and $\inf \phi = k > 0$ and $\exists x \in X$ s.t. $d(x,f(x)) = k$. $d(f(x),f(f(x))) < d(x,f(x)) = k$, contradicts $k$ infimum.
+
+\end{workshop}
+
+%%%%%%%%%%%%%%%%%
+% Miscellaneous %
+%%%%%%%%%%%%%%%%%
+
+\section{Miscellaneous}
+
+% Finite Geometric Sum
+\begin{remark}{}{Geometric Sum}
+
+    \begin{align*}
+        \sum_{k = 0}^n r^k =  \frac{1 - r^{n+1}}{1 - r}
+    \end{align*}
+
+\end{remark}
+
+% Turn Product of Functions into Sum of Functions.
+\begin{remark}{Product to Sum}
+
+    $fg = \frac{1}{4}((f + g)^2 - (f - g)^2)$
+
+    N.B.: Used in proof of Cauchy-Schwarz for functions.
+
+\end{remark}
+
+%%%%%%%%%%%%%%%
+% Definitions %
+%%%%%%%%%%%%%%%
+
+\section{Definitions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Convergence Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Convergence}
+
+% Pointwise Convergence of Sequence of Functions.
+\begin{definition}{\cw{7.1}}{}
+
+    Let $S \subseteq \mathbb{R}$, non-empty. A sequence of functions $f_n: S \to \mathbb{R}$ \emph{converges pointwise} on $S$ $\Leftrightarrow$ $f(x) = \lim_{n \to \infty} f_n(x)$ exists for each $x \in S$. N.B.: $N$ may depend on $x$.
+
+\end{definition}
+
+% Uniform Convergence of Sequence of Functions.
+\begin{definition}{\cw{7.7}}{}
+
+    Let $S \subseteq \mathbb{R}$, non-empty. A sequence of functions $f_n: S \to \mathbb{R}$ \emph{converges uniformly} on $S$ to function $f$ $\Leftrightarrow$ $\forall \upvarepsilon > 0 \, \exists N \in \mathbb{N}$ s.t.:
+
+        \begin{align*}
+            n \geq N \Rightarrow |f_n(x) - f(x)| < \upvarepsilon, \quad \forall x \in S.
+        \end{align*}
+
+    N.B.: $N$ independent of $x$.
+
+\end{definition}
+
+% Uniformly Bounded Sequences of Functions.
+\begin{definition}{}{Ex. 7.1.3}
+
+    Let $f_n: S \to \mathbb{R}$ be a sequence of functions. If $\exists M > 0 \, \forall x \in S, n \in \mathbb{N}$ s.t. $|f_n(x)| \leq M$, then the sequence of functions is \emph{uniformly bounded}.
+
+\end{definition}
+
+% Convergence of Series of Functions.
+\begin{definition}{\cw{7.13}}{}
+
+    Let $S \subseteq \mathbb{R}$, $f_k: S \to \mathbb{R}$ and $s_n(x) \coloneqq \sum_{k = 1}^n f_k(x)$, for $x \in S$, $n \in \mathbb{N}$.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item $\sum_{k=1}^{\infty} f_k$ converges \emph{pointwise} on $S$ $\Leftrightarrow$ sequence $s_n(x)$ converges pointwise on $S$;
+            \item $\sum_{k=1}^{\infty} f_k$ converges \emph{uniformly} on $S$ $\Leftrightarrow$ sequence $s_n(x)$ converges uniformly on $S$;
+            \item $\sum_{k=1}^{\infty} f_k$ converges \emph{absolutely (pointwise)} on $S$ $\Leftrightarrow$ sequence $\sum_{k=1}^{\infty} |f_k|$ converges for each $x \in S$.
+        \end{enumerate}
+
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Power Series Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Power Series}
+
+% Real Power Series.
+\begin{definition}{}{Power Series}
+
+    Let $(a_n)$ be sequence of real numbers, $c \in \mathbb{R}$. A \emph{power series} is a series of the form:
+
+        \begin{align*}
+            \sum_{n=0}^{\infty} a_n (x - c)^n
+        \end{align*}
+
+    where $a_n$ are the \emph{coefficients}, $c$ is the \emph{centre}.
+
+\end{definition}
+
+% Radius of Convergence.
+\begin{definition}{}{Radius of Convergence}
+
+    The \emph{radius of convergence $R$} of power series $\sum_{n=0}^{\infty} a_n (x - c)^n$ is
+
+        \begin{align*}
+            R = \sup\{r \geq 0: (a_nr^n) \,\textrm{is bounded}\}
+        \end{align*}
+
+    unless $(a_nr^n)$ is bounded for all $r \geq 0$, then $R = \infty$. I.e. $R$ is \emph{unique} number s.t. for $r < R$, $(a_nr^n)$ is bound, for $r > R$, $(a_nr^n)$ is unbound.
+
+\end{definition}
+
+% Analytic Function.
+\begin{definition}{}{Analytic Function}
+
+    A function $f$ is \emph{analytic} on $S = \{ x \in \mathbb{R}: |x - c| < r\}$ if there is a power series centred at $c$ that converges to $f$ on $S$.
+
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Riemann Integration Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Riemann Integration}
+
+% Uniform Continuity.
+\begin{definition}{}{Uniform Continuity}
+
+    Let $I \subseteq \mathbb{R}$ be an interval, $f: I \to \mathbb{R}$. We say $f$ is \emph{uniformly continuous} on $I$ if $\forall \upvarepsilon > 0 \, \exists\, \delta > 0$ s.t. for $x,y \in I$:
+
+        \begin{align*}
+            |x - y| < \delta \Rightarrow |f(x) - f(y)| < \upvarepsilon
+        \end{align*}
+
+\end{definition}
+
+% Characteristic Function that is One on Given Interval.
+\begin{definition}{}{Characteristic Function}
+
+    Let $E \subseteq \mathbb{R}$, then $\chi_E: \mathbb{R} \to \mathbb{R}$ is the \emph{characteristic function} if $\chi_E(x) = 1$ if $x \in E$, $\chi_E(x) = 0$ if $x \not\in E$.
+
+\end{definition}
+
+% Integral of Characteristic Function.
+\begin{definition}{}{Area Under the Curve}
+
+    Let $I \subset \mathbb{R}$ be a \emph{bounded interval}. Then
+
+        \begin{align*}
+            \int \chi_I = \textrm{length}(I).
+        \end{align*}
+
+\end{definition}
+
+% Step Function.
+\begin{definition}{[Integration, Def. 1]}{}
+
+    We say $\phi: \mathbb{R} \to \mathbb{R}$ is a \emph{step function} if there exist real numbers $x_0 < x_1 < \hdots < x_n$, for some $n \in \mathbb{N}$, s.t.
+
+        \begin{enumerate}[(i)]
+            \setlength{\parskip}{0em}
+            \item $\phi(x) = 0$ for $x < x_0$ and $x > x_n$;
+            \item $\phi$ constant on $(x_{j-1},x_j)$, $1 \leq j \leq n$.
+        \end{enumerate}
+
+\end{definition}
+
+% Bounded Support of Function.
+\begin{definition}{}{Bounded Support}
+
+    A function $f$ has \emph{bounded support} if $f(x) = 0$ for $x \not\in [c,d]$, where $[c,d]$ is some bounded interval.
+
+\end{definition}
+
+% Integral of a Step Function.
+\begin{definition}{[Integration, Def. 2]}{}
+
+    Let $\phi$ be a step function with respect to $\{x_0,x_1,\hdots,x_n\}$, where $\phi(x) = c_j$ for $x \in (x_{j-1},x_j)$, then
+
+        \begin{align*}
+            \int \phi \coloneqq \sum_{j = 1}^n c_j (x_j - x_{j-1}).
+        \end{align*}
+
+\end{definition}
+
+% Riemann-Integrable Function.
+\begin{definition}{[Integration, Def. 3]}{}
+
+    Let $f: \mathbb{R} \to \mathbb{R}$. Then $f$ is \emph{Riemann-integrable} if $\forall \upvarepsilon > 0 \, \exists\, \phi, \psi$ step functions s.t. $\phi \leq f \leq \psi$ and
+
+        \begin{align*}
+            \int \psi - \int \phi < \upvarepsilon.
+        \end{align*}
+
+\end{definition}
+
+% Riemann Integral as Supremum/Infimum of Step Function Integrals.
+\begin{definition}{[Integration, Def. 4]}{}
+
+    If $f$ is \emph{Riemann-integrable}, then we define:
+
+        \begin{align*}
+            \int f \coloneqq &\sup\left\{\int \phi: \phi\,\, \textrm{step function}, \phi \leq f\right\} = \\
+            &\inf\left\{\int \psi: \psi\,\, \textrm{step function}, \psi \geq f\right\}.
+        \end{align*}
+
+\end{definition}
+
+% Definite Integral.
+\begin{definition}{}{Definite Integral}
+
+    Let $f: I \to \mathbb{R}$, where $I$ is \emph{bounded interval} open/closed at end points $a \leq b$. Let $\tilde{f}(x) = f(x)$ for $x \in I$ and $f(x) = 0$ for $x \not\in I$. $\tilde{f}$ \emph{Riemann-integrable} $\Rightarrow$ $f$ \emph{Riemann-integrable on $I$} and
+
+        \begin{align*}
+            \int_I f = \int\limits_a^b f = \int\limits_a^b f(x) \,dx \coloneqq \int \tilde{f}
+        \end{align*}
+
+    is the \emph{definite integral of $f$ on $I$}.
+
+\end{definition}
+
+% Improper Integral.
+\begin{definition}{}{Improper Integral}
+
+    Let $f: \mathbb{R} \to \mathbb{R}$ be \emph{possibly unbounded}, let
+
+        \begin{align*}
+            f_n(x) = \Middle\{-n,f(x),n\}\chi_{[-n,n]}(x)
+        \end{align*}
+
+    and
+
+        \begin{align*}
+            F_n(x) = \min\{|f(x)|,n\}\chi_{[-n,n]}(x)
+        \end{align*}
+
+    If $\sup_{n}\int F_n < \infty$, then the \emph{improper integral} of $f$ over interval $I$ is
+
+        \begin{align*}
+            \int_I f \coloneqq \lim_{n \to \infty} \int_I f_n.
+        \end{align*}
+
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Metric Spaces Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Metric Spaces}
+
+% Metric Space.
+\begin{definition}{\cw{10.1}}{}
+
+    A \emph{metric space} is a set $X$ together with a function $\rho: X \times X \to \mathbb{R}$ (the \emph{metric} of X) which satisfies the following properties for $x,y,z \in X$:
+
+        \begin{enumerate}[(i)]
+            \setlength{\parskip}{0em}
+            \item \emph{Positive definite:} $\rho(x,y) \geq 0$ with $\rho(x,y) = 0$ $\Leftrightarrow$ $x = y$;
+            \item \emph{Symmetric:} $\rho(x,y) = \rho(y,x)$;
+            \item \emph{Triangle Inequality:} $\rho(x,y) \leq \rho(x,z) + \rho(z,y)$
+        \end{enumerate}
+
+    N.B.: $\rho(x,y)$ is finite valued by definition.% for all $x,y \in X$.
+
+\end{definition}
+
+% Open and Closed Balls.
+\begin{definition}{\cw{10.7}}{}
+
+    Let $a \in X$ and $r > 0$. The \emph{open ball} (in $X$) with \emph{centre $a$} and \emph{radius $r$} is the set
+
+        \begin{align*}
+            B_r(a) \coloneqq \{x \in X: \rho(x,a) < r\}
+        \end{align*}
+
+    and the \emph{closed ball} (in $X$) with \emph{centre $a$} and \emph{radius $r$} is the set
+
+        \begin{align*}
+            \{x \in X: \rho(x,a) \leq r\}
+        \end{align*}
+
+\end{definition}
+
+% Open and Closed Sets.
+\begin{definition}{\cw{10.8}}{}
+
+    \begin{enumerate}[i)]
+        \setlength{\parskip}{0em}
+        \item A set $V \subseteq X$ is \emph{open} $\Leftrightarrow$ $\forall x \in V \, \exists\, \upvarepsilon > 0$ s.t. open ball $B_{\upvarepsilon}(x) \subseteq V$.
+        \item A set $E \subseteq X$ is \emph{closed} $\Leftrightarrow$ complement $E^{c} \coloneqq X \setminus E$ is \emph{open}.
+    \end{enumerate}
+
+\end{definition}
+
+% Convergence, Cauchy Sequences and Boundedness in Arbitrary Metric Space.
+\begin{definition}{\cw{10.13}}{}
+
+    Let $\{x_n\}$ be a sequence in $X$.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item $\{x_n\}$ \emph{converges} (in X) if $\exists \, a \in X$ (the \emph{limit} of $x_n$) s.t. $\forall \upvarepsilon > 0 \, \exists N \in \mathbb{N}$ s.t.:
+
+                \begin{align*}
+                    n \geq N \Rightarrow \rho(x_n,a) < \upvarepsilon.
+                \end{align*}
+
+            \item $\{x_n\}$ is \emph{Cauchy} if $\forall \upvarepsilon > 0 \, \exists N \in \mathbb{N}$ s.t.:
+
+                \begin{align*}
+                    n,m \geq N \Rightarrow \rho(x_n,x_m) < \upvarepsilon.
+                \end{align*}
+
+            \item $\{x_n\}$ is \emph{bounded} if $\exists M > 0, b \in X$ s.t.
+
+                \begin{align*}
+                    \rho(x_n,b) \leq M, \quad \forall n \in \mathbb{N}.
+                \end{align*}
+        \end{enumerate}
+
+\end{definition}
+
+% Complete Metric Space.
+\begin{definition}{\cw{10.19}}{}
+
+    A metric space $X$ is \emph{complete} $\Leftrightarrow$ \emph{every Cauchy} sequence $\{x_n\}$ in $X$ \emph{converges} to some point \emph{in} $X$.
+
+\end{definition}
+
+% Cluster Point or Point of Accumulation.
+\begin{definition}{\cw{10.22}}{}
+
+    A point $a \in X$ is a \emph{cluster point} $\Leftrightarrow$ $\forall \delta > 0$, $B_{\delta}(a)$ contains \emph{infinitely} many points.
+
+\end{definition}
+
+\begin{definition}{}{Relative Ball}
+
+    Let $E \subseteq X$ be a \emph{subspace} of $X$. An \emph{open ball} in $E$ centred at $a$ is defined as
+
+        \begin{align*}
+            B_r^E(a) \coloneqq \{ x \in E: \rho(x,a) < r \}
+        \end{align*}
+
+    and as metric on $X$ and $E$ are the same, is of the form
+
+        \begin{align*}
+            B_r^E(a) = B_r(a) \cap E
+        \end{align*}
+
+    where $B_r(a)$ is an open ball in X. $B_r^E(a)$ is called \emph{relative ball} (in $E$). The case with closed balls is analogous.
+
+\end{definition}
+
+% Limit of Functions Over Arbitrary Metric Spaces.
+\begin{definition}{\cw{10.25}}{}
+
+    Let $a \in X$ be a \emph{cluster point} and $f: X \setminus \{a\} \to Y$. Then $f(x) \to L$ as $x \to a$ $\Leftrightarrow$ $\forall \upvarepsilon > 0 \, \exists \, \delta > 0$ s.t.:
+
+        \begin{align*}
+            0 < \rho(x,a) < \delta \Rightarrow \tau(f(x),L) < \upvarepsilon.
+        \end{align*}
+
+\end{definition}
+
+% Continuity of Functions Over Arbitrary Metric Spaces.
+\begin{definition}{\cw{10.27}}{}
+
+    Let $E \subseteq X$, non-empty, and $f: E \to Y$.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item $f$ is \emph{continuous at point $a \in E$} $\Leftrightarrow$ $\forall \upvarepsilon > 0 \, \exists \, \delta > 0$ s.t.
+
+                \begin{align*}
+                    \rho(x,a) < \delta \textrm{ and } x \in E \Rightarrow \tau(f(x),f(a)) < \upvarepsilon.
+                \end{align*}
+
+            \item $f$ is \emph{continuous on $E$} $\Leftrightarrow$ $f$ \emph{continuous} for \emph{every} $x \in E$.
+
+            N.B.: This is valid whether $a$ is cluster point or not.
+        \end{enumerate}
+
+\end{definition}
+
+% Isolated Points in Metric Space.
+\begin{definition}{}{Isolated Points}
+
+    Let $(X,d)$ be a metric space, $a \in X$. Then $a$ is \emph{isolated} if $\exists \, r > 0$ s.t. $B_r(a) = \{a\}$.
+
+\end{definition}
+
+% Strong Equivalence of Metrics.
+\begin{definition}{}{Strong Equivalence}
+
+    Two metrics $d$ and $\rho$ on $X$ are \emph{strongly equivalent} if $\exists \, A,B$ s.t.
+
+        \begin{align*}
+            &d(x,y) \leq A \rho(x,y) \\
+            &\rho(x,y) \leq B d(x,y), \quad \forall x,y \in X.
+        \end{align*}
+
+\end{definition}
+
+% Equivalence of Metrics.
+\begin{definition}{}{Equivalence}
+
+    Two metrics $d$ and $\rho$ on $X$ are \emph{equivalent} if $\forall x \in X, \upvarepsilon > 0 \, \exists \, \delta > 0$ s.t.
+
+        \begin{align*}
+            &d(x,y) < \delta \Rightarrow \rho(x,y) < \upvarepsilon \textrm{ and } \\
+            &\rho(x,y) < \delta \Rightarrow d(x,y) < \upvarepsilon
+        \end{align*}
+
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Topology Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Topology}
+
+% Interior and Closure of Subset of Metric Space.
+\begin{definition}{\cw{10.33}}{}
+
+    Let $X$ be a metric space and $E \subseteq X$.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item The \emph{interior} of $E$ is the set
+
+                \begin{align*}
+                    E^o \coloneqq \bigcup \{V : V \subseteq E \,\,\textrm{and $V$ \emph{open} in $X$}\}.
+                \end{align*}
+
+            \item The \emph{closure} of $E$ is the set
+
+                \begin{align*}
+                    \overline{E} \coloneqq \bigcap \{B : B \supseteq E \,\,\textrm{and $B$ \emph{closed} in $X$}\}.
+                \end{align*}
+        \end{enumerate}
+
+\end{definition}
+
+% Boundary of a Set.
+\begin{definition}{\cw{10.37}}{}
+
+    Let $E \subset X$. The \emph{boundary} of $E$ is the set
+
+        \begin{align*}
+            \partial E \coloneqq \{x \in X : \forall r > 0,\, &B_r(x) \cap E \neq \emptyset \textrm{ and } \\ &B_r(x) \cap E^c \neq \emptyset\}.
+        \end{align*}
+
+\end{definition}
+
+% Covering, Open Covering and Finite Subcovering.
+\begin{definition}{\cw{10.41}}{}
+
+    Let $\mathcal{V} = \{V_{\alpha}\}_{\alpha \in A}$ be a \emph{collection of subsets} of metric space $X$ and let $E \subseteq X$.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item $\mathcal{V}$ \emph{covers} $E$ ($\mathcal{V}$ is a \emph{covering} of $E$) $\Leftrightarrow$
+
+                \begin{align*}
+                    E \subseteq \bigcup_{\alpha \in A} V_{\alpha}.
+                \end{align*}
+
+            \item $\mathcal{V}$ is an \emph{open covering} of $E$ $\Leftrightarrow$ $\mathcal{V}$ \emph{covers} $E$ and each $V_{\alpha}$ is \emph{open}.
+
+            \item Let $\mathcal{V}$ be a \emph{covering} of $E$. $\mathcal{V}$ has a \emph{finite/countable subcovering} $\Leftrightarrow$ there is a \emph{finite/countable} subset $A_0 \subseteq A$ s.t. $\{V_{\alpha}\}_{\alpha \in A_0}$ \emph{covers} $E$.
+        \end{enumerate}
+
+\end{definition}
+
+\begin{definition}{\cw{10.42}}{}
+
+    Let $H \subseteq X$ with $X$ being a metric space. $H$ is \emph{compact} $\Leftrightarrow$ \emph{every open covering} of $H$ has \emph{finite subcover}.
+
+\end{definition}
+
+% Sequential Compactness, i.e. Every Sequence Has Convergent Subsequence.
+\begin{definition}{10.4.10a}{}
+
+    $E \subseteq X$ is \emph{sequentially compact} $\Leftrightarrow$ every sequence $(x_n)$ in $E$ has a \emph{convergent subsequence} with limit in $E$.
+
+\end{definition}
+
+% Separable and Connected Metric Spaces.
+\begin{definition}{\cw{10.53}}{}
+
+    Let $X$ be a metric space.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item A pair of \emph{non-empty open} sets $U$, $V$ in $X$ \emph{separates} $X$ $\Leftrightarrow$ $X = U \cup V$ and $U \cap V = \emptyset$.
+            \item $X$ is \emph{connected} $\Leftrightarrow$ $X$ \emph{cannot} be \emph{separated} by \emph{any pair} of open sets $U$, $V$.
+        \end{enumerate}
+
+\end{definition}
+
+% Relatively Open/Closed Sets are Part of Larger Open/Closed Sets in Metric Space.
+\begin{definition}{\cw{10.54}}{}
+
+    Let $X$ be a metric space and $E \subseteq X$.
+
+        \begin{enumerate}[i)]
+            \setlength{\parskip}{0em}
+            \item $U \subseteq E$ is \emph{relatively open} in $E$ $\Leftrightarrow$ $\exists\, V \subseteq X$, s.t. $V$ \emph{open} and $U = E \cap V$.
+            \item $A \subseteq E$ is \emph{relatively closed} in $E$ $\Leftrightarrow$ $\exists\, C \subseteq X$, s.t. $C$ \emph{closed} and $A = E \cap C$.
+        \end{enumerate}
+
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Contraction Mapping Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Contraction Mappings}
+
+% Contraction Map.
+\begin{definition}{}{Contraction}
+
+    Let $(X,d)$ be a metric space. A function $f: X \to X$ is a \emph{contraction} if $\exists \, \alpha$ with $0 < \alpha < 1$ s.t.:
+
+        \begin{align*}
+            d(f(x),f(y)) \leq \alpha d(x,y), \quad \forall x,y \in X.
+        \end{align*}
+
+    Constant $\alpha$ is called the \emph{contraction constant} of $f$.
+
+\end{definition}
+
+% Fixed Point of a Function.
+\begin{definition}{}{Fixed Point}
+
+    Let $f: X \to X$. If $x \in X$ is s.t. $f(x) = x$, then $x$ is a \emph{fixed point} of $f$.
+
+\end{definition}
+
+\end{multicols}
+
+\end{document}
